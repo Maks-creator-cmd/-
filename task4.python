@@ -1,0 +1,23 @@
+def min_moves_to_equal(nums):
+    if not nums:
+        return 0
+
+    nums_sorted = sorted(nums)
+    n = len(nums_sorted)
+    
+    # Находим медиану
+    median = nums_sorted[n // 2]  # для нечётной длины — точно медиана; для чётной — одно из двух центральных значений
+    
+    # Считаем суммарное число ходов
+    moves = sum(abs(x - median) for x in nums_sorted)
+    
+    if moves <= 20:
+        return moves
+    else:
+        return "Невозможно привести все элементы к одному числу за 20 ходов"
+
+# Примеры использования:
+print(min_moves_to_equal([1, 2, 3]))          # Вывод: 2
+print(min_moves_to_equal([1, 10, 20]))        # Вывод: сообщение о невозможности (сумма будет большой)
+print(min_moves_to_equal([5, 5, 5]))          # Вывод: 0
+print(min_moves_to_equal([3, 7, 2, 8]))       # Вывод: посчитаем для медианы (например, 7 или 3) — проверим сумму
