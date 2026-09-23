@@ -1,0 +1,96 @@
+const valuesData = [
+  {"id": 2, "value": "passed"},
+  {"id": 41, "value": "passed"},
+  {"id": 73, "value": "passed"},
+  {"id": 110, "value": "failed"},
+  {"id": 122, "value": "failed"},
+  {"id": 234, "value": "passed"},
+  {"id": 238, "value": "passed"},
+  {"id": 345, "value": "passed"},
+  {"id": 653, "value": "passed"},
+  {"id": 690, "value": "failed"},
+  {"id": 5321, "value": "passed"},
+  {"id": 5322, "value": "failed"}
+];
+
+const testsData = [
+  {
+    "id": 2,
+    "title": "Smoke test",
+    "value": ""
+  },
+  {
+    "id": 41,
+    "title": "Debug test",
+    "value": ""
+  },
+  {
+    "id": 73,
+    "title": "Performance test",
+    "value": "",
+    "values": [
+      {
+        "id": 345,
+        "title": "Maxperf",
+        "value": "",
+        "values": [
+          {
+            "id": 230,
+            "title": "Percent",
+            "values": [
+              {"id": 234, "title": "200", "value": ""},
+              {"id": 653, "title": "300", "value": ""}
+            ]
+          }
+        ]
+      },
+      {
+        "id": 110,
+        "title": "Stability test",
+        "value": "",
+        "values": [
+          {
+            "id": 261,
+            "title": "Percent",
+            "values": [
+              {"id": 238, "title": "160", "value": ""},
+              {"id": 690, "title": "240", "value": ""}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 122,
+    "title": "Security test",
+    "value": "",
+    "values": [
+      {"id": 5321, "title": "Confidentiality", "value": ""},
+      {"id": 5322, "title": "Integrity", "value": ""}
+    ]
+  }
+];
+
+const idToValue = {};
+for (const item of valuesData) {
+  if (item.id !== undefined) idToValue[item.id] = item.value || '';
+}
+
+function fillValues(node) {
+  if (Array.isArray(node)) return node.map(fillValues);
+  if (typeof node === 'object' && node !== null) {
+    const result = { ...node };
+    if (result.id !== undefined && idToValue.hasOwnProperty(result.id)) {
+      result.value = idToValue[result.id];
+    }
+    if (Array.isArray(result.values)) {
+      result.values = fillValues(result.values);
+    }
+    return result;
+  }
+  return node;
+}
+
+const report = fillValues(testsData);
+console.log(JSON.stringify(report, null, 2));
