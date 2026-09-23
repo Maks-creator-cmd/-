@@ -1,0 +1,12 @@
+import math
+
+def is_point_inside_ellipse(h, k, a, b, x, y):
+    # Уравнение эллипса
+    equation = (x - h)**2 / a**2 + (y - k)**2 / b**2 - 1
+    
+    # Проверка положения точки
+    return equation <= 0
+
+# Пример использования
+print(is_point_inside_ellipse(0, 0, 1, 1, 1, 1))  # True, точка (1, 1) внутри эллипса
+print(is_point_inside_ellipse(0, 0, 1, 1, 2, 2))  # False, точка (2, 2) вне эллипса
